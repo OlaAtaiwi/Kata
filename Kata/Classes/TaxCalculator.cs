@@ -11,6 +11,10 @@ namespace Kata
         {
             Tax = 20;
         }
+        public TaxCalculator(double tax)
+        {
+            Tax = tax;
+        }
         public double CalculateTaxAmount(Product product)
         {
             return Math.Round(product.Price*(Validate(Tax)), 2);

@@ -8,7 +8,7 @@ namespace Kata
         public int UPC { get; set; }
         public double Price { get; set; }
         public double FinalPrice { get; set; }
-        public double PriceWithTax { get; set; }
+        public double TaxAmount { get; set; }
         public double DiscountAmount { get; set; }
         public Product(string Name, int UPC, double Price)
         {

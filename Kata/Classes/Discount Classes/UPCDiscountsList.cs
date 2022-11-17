@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kata
 {
-    public class UPCDiscounts
+    public class UPCDiscountsList
     {
         public static Dictionary<int,double> getUPCDiscounts()
         {

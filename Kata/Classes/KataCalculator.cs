@@ -16,20 +16,12 @@ namespace Kata
             Product = product;
             taxCalculator = new TaxCalculator();
             discountCalculator = new DiscountCalculator();
-        }
-        public void ApplyTax(double tax)
-        {
-            taxCalculator.Tax = tax;
-        }
-        public void ApplyDiscount(double discount)
-        {
-            discountCalculator.defaultDiscount = discount;
-        }
+        } 
         public void CalculatePrice()
         {
-            Product.PriceWithTax = Product.Price + taxCalculator.CalculateTaxAmount(Product);
+            Product.TaxAmount =taxCalculator.CalculateTaxAmount(Product);
             Product.DiscountAmount = discountCalculator.CalculateDiscountAmount(Product);
-            Product.FinalPrice = Product.PriceWithTax - Product.DiscountAmount;
+            Product.FinalPrice = Product.Price + Product.TaxAmount - Product.DiscountAmount;
         }
     }
 }
