@@ -6,7 +6,11 @@ namespace Kata
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Product product = new Product("The Little Prince", 12345, 20.25);
+            Console.WriteLine(product.ToString());
+            TaxCalculator.PriceWithTax(product, 20);
+            TaxCalculator.PriceWithTax(product, 21);
+
         }
     }
 }
