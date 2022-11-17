@@ -13,7 +13,7 @@ namespace Kata
         public Product(string Name, int UPC, double Price)
         {
             this.Name = Name;
-            this.UPC = UPC;
+            this.UPC = UPC;   
             this.Price = Math.Round(ValidatePrice(Price), 2);
         }
         private double ValidatePrice(double Price)
@@ -22,8 +22,8 @@ namespace Kata
                 return Price;
             throw new ArgumentException("Invalid Price! Price can not be 0 or less");
         }
-        public override string ToString() => $"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";
-
+        public override string ToString() =>$"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";
+        
 
     }
 }
