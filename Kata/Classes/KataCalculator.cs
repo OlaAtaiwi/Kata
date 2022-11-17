@@ -23,7 +23,7 @@ namespace Kata
         }
         public void ApplyDiscount(double discount)
         {
-            discountCalculator.Discount = discount;
+            discountCalculator.defaultDiscount = discount;
         }
         public void CalculatePrice()
         {
