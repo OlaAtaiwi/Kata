@@ -7,13 +7,13 @@ namespace Kata
         public string Name { get; set; }
         public int UPC { get; set; }
         public double Price { get; set; }
-        public double PriceAfterTax { get; set; }
-
+        public double FinalPrice { get; set; }
+        public double PriceWithTax { get; set; }
+        public double DiscountAmount { get; set; }
         public Product(string Name, int UPC, double Price)
         {
             this.Name = Name;
             this.UPC = UPC;
-
             this.Price = Math.Round(ValidatePrice(Price), 2);
         }
         private double ValidatePrice(double Price)

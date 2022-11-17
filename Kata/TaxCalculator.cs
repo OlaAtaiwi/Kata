@@ -1,21 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Kata
 {
     public class TaxCalculator
     {
-        public static void PriceWithTax(Product product, double tax)
+        public double Tax { get; set; }
+        public TaxCalculator()
         {
-            product.PriceAfterTax = Math.Round(product.Price * (1 + ValidateTax(tax)), 2);
-            ReportPrinter.PrintPrices(product, tax);
+            Tax = 20;
         }
-        private static double ValidateTax(double tax)
+        public double CalculateTaxAmount(Product product)
         {
-            if (tax > 100 || tax < 0)
+            return Math.Round(product.Price * (Validate(Tax)), 2);
+        }
+        private static double Validate(double Number)
+        {
+            if (Number > 100 || Number < 0)
                 throw new ArgumentException("Invalid tax! Tax must be between 0 and 100");
-            return tax / 100;
+            return Number / 100;
         }
-
-
     }
 }
