@@ -7,9 +7,9 @@ namespace Kata
     public class KataCalculator
     {
 
-        public Product Product;
-       public TaxCalculator taxCalculator;
-       public DiscountCalculator discountCalculator;
+       public Product Product { get; private set; }
+       public TaxCalculator taxCalculator { get; private set; }
+       public DiscountCalculator discountCalculator { get; private set; }
 
         public KataCalculator(Product product)
         {
@@ -17,6 +17,7 @@ namespace Kata
             taxCalculator = new TaxCalculator();
             discountCalculator = new DiscountCalculator();
         } 
+
         public void CalculatePrice()
         {
             Product.TaxAmount =taxCalculator.CalculateTaxAmount(Product);

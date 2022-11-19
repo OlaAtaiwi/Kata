@@ -7,25 +7,22 @@ namespace Kata
 {
     public class DefaultDiscountCalculator : IDiscount
     {
+        const int DiscountPercent = 15;
         public double Discount { get; private set; }
+
         public DefaultDiscountCalculator()
         {
-            Discount = 15;
-        }
-        public DefaultDiscountCalculator(double discount)
-        {
-            Discount = Validate(discount);
-        }
-        public double CalculateDiscountAmount(Product product)
-        {
-            return Math.Round(product.Price*(Validate(Discount/100)), 2);
+            Discount = DiscountPercent;
         }
 
-        private static double Validate(double Number)
+        public DefaultDiscountCalculator(double discount)
         {
-            if (Number > 100 || Number < 0)
-                throw new ArgumentException("Invalid Discount! Discount must be between 0 and 100");
-            return Number;
+            Discount =Validator.ValidatePercent(discount);
+        }
+
+        public double CalculateDiscountAmount(Product product)
+        {
+            return Math.Round(product.Price*(Validator.ValidatePercent(Discount/100)), 2);
         }
 
         public double GetDiscountPercent(Product product)
