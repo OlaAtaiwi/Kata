@@ -5,7 +5,7 @@ namespace Kata
 {
     public class UPCDiscountsList
     {
-        public static Dictionary<int,double> getUPCDiscounts()
+        public static Dictionary<int,double> GetUPCDiscounts()
         {
             var dictionary = new Dictionary<int, double>();
             dictionary.Add(12345,15);
