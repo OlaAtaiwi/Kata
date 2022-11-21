@@ -11,5 +11,16 @@ namespace Kata
         {
             ListOfDiscounts = discounts;
         }
+        public bool ContainsPrecedence(DiscountPrecedence precedence)
+        {
+            if (ListOfDiscounts == null)
+                return false;
+            foreach (var item in ListOfDiscounts)
+            {
+                if (item.Precedence == precedence)
+                    return true;
+            }
+            return false;
+        }
     }
 }

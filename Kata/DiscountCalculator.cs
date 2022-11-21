@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Collections.Generic;
 namespace Kata
 {
     public class DiscountCalculator
@@ -9,53 +9,44 @@ namespace Kata
         public BeforeTaxDiscounter beforeTaxDiscounter { get; private set; }
         public DiscountCalculator(ListOfDiscountsWithDetails discounts)
         {
-            GenerateDiscountCalculators(discounts);
-        }
-
-        private void GenerateDiscountCalculators(ListOfDiscountsWithDetails discounts)
-        {
-            var before = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.Before).ToList();
-            var after = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.After).ToList();
-            if (after == null)
-                afterTaxDiscounter = null;
-            else
+            if (discounts != null)
             {
-                if (after.Count == 2)
-                    afterTaxDiscounter = new AfterTaxDiscounter(new AfterTaxDefaultDiscounter(), new AfterTaxUPCDiscounter());
-                else
+                List<DiscountDetails> before;
+                if (discounts.ContainsPrecedence(DiscountPrecedence.Before))
                 {
-                    if (after[0].DiscountType == DiscountType.Default)
-                        afterTaxDiscounter = new AfterTaxDiscounter(new AfterTaxDefaultDiscounter(), null);
-                    else
-                        afterTaxDiscounter = new AfterTaxDiscounter(null, new AfterTaxUPCDiscounter());
+                    before = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.Before).ToList();
+                    beforeTaxDiscounter = new BeforeTaxDiscounter(before);
+                    //CreateBeforeTaxDiscounter(before);
+                }
+                List<DiscountDetails> after;
+                if (discounts.ContainsPrecedence(DiscountPrecedence.After))
+                {
+                    after = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.After).ToList();
+                    afterTaxDiscounter = new AfterTaxDiscounter(after);
                 }
             }
-            if (before == null)
-                beforeTaxDiscounter = null;
             else
             {
-                if (before.Count == 2)
-                    beforeTaxDiscounter = new BeforeTaxDiscounter(new BeforeTaxDefaultDiscounter(), new BeforeTaxUPCDiscounter());
-                else
-                {
-                    if (before[0].DiscountType == DiscountType.Default)
-                        beforeTaxDiscounter = new BeforeTaxDiscounter(new BeforeTaxDefaultDiscounter(), null);
-                    else
-                        beforeTaxDiscounter = new BeforeTaxDiscounter(null, new BeforeTaxUPCDiscounter());
-                }
+                beforeTaxDiscounter = null;
+                afterTaxDiscounter = null;
             }
         }
 
         public double CalculateDiscount(Product product)
         {
-            var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
-            var afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
+            double beforeTaxDiscountAmount = 0, afterTaxDiscountAmount = 0;
+            if(beforeTaxDiscounter!=null)
+            beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+            if(afterTaxDiscounter!=null)
+            afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
             return beforeTaxDiscountAmount + afterTaxDiscountAmount;
         }
 
         public double GetBeforeTaxDiscountAmount(Product product)
         {
-            var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+            double beforeTaxDiscountAmount = 0;
+            if (beforeTaxDiscounter != null)
+                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
             return beforeTaxDiscountAmount;
         }
     }

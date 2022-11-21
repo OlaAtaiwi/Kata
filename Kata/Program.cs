@@ -16,7 +16,9 @@ namespace Kata
 
         private static ListOfDiscountsWithDetails GenerateDiscountsList()
         {
-            List<DiscountDetails> ListOfDiscounts = new List<DiscountDetails>() { new DiscountDetails(DiscountPrecedence.Before, DiscountType.Default), new DiscountDetails(DiscountPrecedence.After, DiscountType.UPC) };
+            List<DiscountDetails> ListOfDiscounts = new List<DiscountDetails>();
+            ListOfDiscounts.Add(new DiscountDetails(DiscountPrecedence.After, DiscountType.Default));
+            ListOfDiscounts.Add(new DiscountDetails(DiscountPrecedence.After, DiscountType.UPC));
             ListOfDiscountsWithDetails DiscountsList = new ListOfDiscountsWithDetails(ListOfDiscounts);
             return DiscountsList;
         }

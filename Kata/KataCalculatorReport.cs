@@ -19,7 +19,10 @@ namespace Kata
 
         public static void BeforeTaxDiscountReport(BeforeTaxDiscounter before, Product product)
         {
-            Console.WriteLine($"Before Tax discounts:{ before.GetDiscountPercent(product)}% and Discount Amount={before.CalculateDiscountsBefore(product)}");
+            if (before != null)
+                Console.WriteLine($"Before Tax discounts:{ before.GetDiscountPercent(product)}% and Discount Amount={before.CalculateDiscountsBefore(product)}");
+            else
+                Console.WriteLine("No Discounts Before Tax is applied");
         }
 
         public static void taxReport(TaxCalculator taxCal, double price)
@@ -29,7 +32,10 @@ namespace Kata
 
         public static void AfterTaxDiscountReport(AfterTaxDiscounter after, Product product, double price)
         {
-            Console.WriteLine($"After Tax discounts:{ after.GetDiscountPercent(product)}% and Discount Amount={after.CalculateDiscountsAfter(product, price)}");
+            if (after != null)
+                Console.WriteLine($"After Tax discounts:{ after.GetDiscountPercent(product)}% and Discount Amount={after.CalculateDiscountsAfter(product, price)}");
+            else
+                Console.WriteLine("No Discounts After Tax is applied");
         }
     }
 }

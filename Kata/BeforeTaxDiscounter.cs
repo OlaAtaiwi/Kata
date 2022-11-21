@@ -8,10 +8,42 @@ namespace Kata
     {
         private BeforeTaxDefaultDiscounter _beforeDefault;
         private BeforeTaxUPCDiscounter _beforeUPC;
-        public BeforeTaxDiscounter(BeforeTaxDefaultDiscounter? beforeDefault, BeforeTaxUPCDiscounter? beforeUPC)
+        public BeforeTaxDiscounter(List<DiscountDetails> listOfDiscounts)
         {
-            _beforeDefault = beforeDefault ?? null;
-            _beforeUPC = beforeUPC ?? null;
+            if (listOfDiscounts == null)
+            {
+                _beforeDefault = null;
+                _beforeUPC = null;
+            }
+            else
+            {
+                GenerateDiscounters(listOfDiscounts);
+            }
+        }
+
+        private void GenerateDiscounters(List<DiscountDetails> listOfDiscounts)
+        {
+            if (listOfDiscounts.Count == 2)
+            {
+                _beforeDefault = new BeforeTaxDefaultDiscounter();
+                _beforeUPC = new BeforeTaxUPCDiscounter();
+            }
+            else
+            {
+                if (listOfDiscounts.Count == 1)
+                {
+                    if (listOfDiscounts[0].DiscountType == DiscountType.Default)
+                    {
+                        _beforeDefault = new BeforeTaxDefaultDiscounter();
+                        _beforeUPC = null;
+                    }
+                    else
+                    {
+                        _beforeDefault = null;
+                        _beforeUPC = new BeforeTaxUPCDiscounter();
+                    }
+                }
+            }
         }
 
         public double CalculateDiscountsBefore(Product product)

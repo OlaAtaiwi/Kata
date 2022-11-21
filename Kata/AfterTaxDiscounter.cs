@@ -8,10 +8,42 @@ namespace Kata
     {
         private AfterTaxDefaultDiscounter _afterDefault;
         private AfterTaxUPCDiscounter _afterUPC;
-        public AfterTaxDiscounter(AfterTaxDefaultDiscounter? afterDefault, AfterTaxUPCDiscounter? afterUPC)
+        public AfterTaxDiscounter(List<DiscountDetails> listOfDiscounts)
         {
-            _afterDefault = afterDefault ?? null;
-            _afterUPC = afterUPC ?? null;
+            if (listOfDiscounts == null)
+            {
+                _afterDefault = null;
+                _afterUPC = null;
+            }
+            else
+            {
+                GenerateDiscounters(listOfDiscounts);
+            }
+        }
+
+        private void GenerateDiscounters(List<DiscountDetails> listOfDiscounts)
+        {
+            if (listOfDiscounts.Count == 2)
+            {
+                _afterDefault = new AfterTaxDefaultDiscounter();
+                _afterUPC = new AfterTaxUPCDiscounter();
+            }
+            else
+            {
+                if (listOfDiscounts.Count == 1)
+                {
+                    if (listOfDiscounts[0].DiscountType == DiscountType.Default)
+                    {
+                        _afterDefault = new AfterTaxDefaultDiscounter();
+                        _afterUPC = null;
+                    }
+                    else
+                    {
+                        _afterDefault = null;
+                        _afterUPC = new AfterTaxUPCDiscounter();
+                    }
+                }
+            }
         }
 
         public double GetDiscountPercent(Product product)
