@@ -10,7 +10,7 @@ namespace Kata
             KataCalculator kata = new KataCalculator(product);
             Console.WriteLine("Case#1");
             kata.CalculatePrice();
-            kata.DiscountReport();
+            kata.DiscountReport(product);
             Console.WriteLine("______________________________________________________________________________");
 
         }

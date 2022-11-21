@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Kata
 {
-   public  class TaxCalculator
+    public class TaxCalculator
     {
-        const int taxPercent = 20;
+        private const int _taxPercent = 20;
         public double Tax { get; set; }
         public TaxCalculator()
         {
-            Tax = taxPercent;
+            Tax = _taxPercent;
         }
 
         public TaxCalculator(double tax)
@@ -20,7 +18,7 @@ namespace Kata
 
         public double CalculateTaxAmount(Product product)
         {
-            return Math.Round(product.Price*(Validator.ValidatePercent(Tax)/100), 2);
+            return Math.Round(product.Price * (Validator.ValidatePercent(Tax) / 100), 2);
         }
     }
 }
