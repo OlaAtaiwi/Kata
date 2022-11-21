@@ -12,6 +12,7 @@ namespace Kata
         {
             Discount = _discountPercent;
         }
+
         public BeforeTaxDefaultDiscounter(double discount)
         {
             Discount = Validator.ValidatePercent(discount);

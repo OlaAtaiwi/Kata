@@ -13,10 +13,10 @@ namespace Kata
         public Product(string Name, int UPC, double Price)
         {
             this.Name = Name;
-            this.UPC = UPC;   
+            this.UPC = UPC;
             this.Price = Math.Round(Validator.ValidatePrice(Price), 2);
         }
 
-        public override string ToString() =>$"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";        
+        public override string ToString() => $"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";
     }
 }

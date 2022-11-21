@@ -16,11 +16,11 @@ namespace Kata
 
         public double CalculateDiscountsBefore(Product product)
         {
-            double defaultAmount = 0,upcAmount=0;
+            double defaultAmount = 0, upcAmount = 0;
             if (_beforeDefault != null)
                 defaultAmount = _beforeDefault.CalculateDiscountsBefore(product);
-            if(_beforeUPC!=null)
-                upcAmount= _beforeUPC.CalculateDiscountsBefore(product);
+            if (_beforeUPC != null)
+                upcAmount = _beforeUPC.CalculateDiscountsBefore(product);
             return defaultAmount + upcAmount;
         }
 

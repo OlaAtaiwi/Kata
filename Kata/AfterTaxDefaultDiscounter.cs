@@ -22,5 +22,5 @@ namespace Kata
         {
             return Math.Round(Price * (Validator.ValidatePercent(Discount) / 100), 2);
         }
-  }
+    }
 }

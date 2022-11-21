@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kata
 {
-   public class AfterTaxDiscounter : IAfterTaxDiscount
+    public class AfterTaxDiscounter : IAfterTaxDiscount
     {
         private AfterTaxDefaultDiscounter _afterDefault;
         private AfterTaxUPCDiscounter _afterUPC;
@@ -13,7 +13,7 @@ namespace Kata
             _afterDefault = afterDefault ?? null;
             _afterUPC = afterUPC ?? null;
         }
-  
+
         public double GetDiscountPercent(Product product)
         {
             double defaultAmount = 0, upcAmount = 0;
@@ -32,7 +32,7 @@ namespace Kata
             if (_afterUPC != null)
                 upcAmount = _afterUPC.CalculateDiscountsAfter(product, Price);
             return defaultAmount + upcAmount;
-           
+
         }
     }
 }

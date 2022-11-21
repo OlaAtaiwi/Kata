@@ -12,7 +12,6 @@ namespace Kata
             kata.CalculatePrice();
             KataCalculatorReport.DiscountReport(kata, product, DiscountsList);
             Console.WriteLine("______________________________________________________________________________");
-
         }
 
         private static ListOfDiscountsWithDetails GenerateDiscountsList()

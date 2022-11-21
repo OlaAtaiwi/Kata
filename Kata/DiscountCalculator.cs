@@ -45,12 +45,14 @@ namespace Kata
                 }
             }
         }
+
         public double CalculateDiscount(Product product)
         {
             var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
             var afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
             return beforeTaxDiscountAmount + afterTaxDiscountAmount;
         }
+
         public double GetBeforeTaxDiscountAmount(Product product)
         {
             var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);

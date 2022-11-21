@@ -10,7 +10,7 @@ namespace Kata
         private Product _product;
         private DiscountCalculator _discountsCalculator;
         private TaxCalculator _taxCalculator;
-        public KataCalculator(Product product,ListOfDiscountsWithDetails discounts)
+        public KataCalculator(Product product, ListOfDiscountsWithDetails discounts)
         {
             this._product = product;
             this._taxCalculator = new TaxCalculator();
@@ -21,8 +21,8 @@ namespace Kata
         {
             var taxAmount = _taxCalculator.CalculateTaxAmount(_product.Price - _discountsCalculator.GetBeforeTaxDiscountAmount(_product));
             _product.TaxAmount = taxAmount;
-            _product.DiscountAmount =_discountsCalculator.CalculateDiscount(_product);
-            _product.FinalPrice = _product.Price + _product.TaxAmount -_product.DiscountAmount;
+            _product.DiscountAmount = _discountsCalculator.CalculateDiscount(_product);
+            _product.FinalPrice = _product.Price + _product.TaxAmount - _product.DiscountAmount;
         }
     }
 }
