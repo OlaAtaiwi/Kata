@@ -6,7 +6,6 @@ namespace Kata
 {
     public class KataCalculator
     {
-
         private Product _product;
         public TaxCalculator taxCalculator { get; private set; }
         private DiscountCalculator _discountCalculator;
