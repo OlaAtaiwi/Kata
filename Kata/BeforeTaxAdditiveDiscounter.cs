@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Kata
 {
-    public class BeforeTaxDiscounter : IBeforeTaxDiscount
+    public class BeforeTaxAdditiveDiscounter : IBeforeTaxDiscount
     {
         private BeforeTaxDefaultDiscounter _beforeDefault;
         private BeforeTaxUPCDiscounter _beforeUPC;
-        public BeforeTaxDiscounter(List<DiscountDetails> listOfDiscounts)
+        public BeforeTaxAdditiveDiscounter(List<DiscountDetails> listOfDiscounts)
         {
             if (listOfDiscounts == null)
             {
@@ -46,13 +46,13 @@ namespace Kata
             }
         }
 
-        public double CalculateDiscountsBefore(Product product)
+        public double CalculateDiscountsBefore(Product product,double price)
         {
             double defaultAmount = 0, upcAmount = 0;
             if (_beforeDefault != null)
-                defaultAmount = _beforeDefault.CalculateDiscountsBefore(product);
+                defaultAmount = _beforeDefault.CalculateDiscountsBefore(product,price);
             if (_beforeUPC != null)
-                upcAmount = _beforeUPC.CalculateDiscountsBefore(product);
+                upcAmount = _beforeUPC.CalculateDiscountsBefore(product,price);
             return defaultAmount + upcAmount;
         }
 

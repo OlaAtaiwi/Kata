@@ -15,7 +15,7 @@ namespace Kata
 
         private static void Kata(Product product, ListOfDiscountsWithDetails DiscountsList, List<Expenses> ExpensesList)
         {
-            KataCalculator kata = new KataCalculator(product, DiscountsList, ExpensesList);
+            KataCalculator kata = new KataCalculator(product, DiscountsList, ExpensesList,CombiningMethods.Multiplicative);
             kata.CalculatePrice();
             KataCalculatorReport.DiscountReport(kata, product, DiscountsList, ExpensesList);
         }
@@ -23,7 +23,7 @@ namespace Kata
         private static ListOfDiscountsWithDetails GenerateDiscountsList()
         {
             List<DiscountDetails> ListOfDiscounts = new List<DiscountDetails>();
-            ListOfDiscounts.Add(new DiscountDetails(DiscountPrecedence.Before, DiscountType.Default));
+            ListOfDiscounts.Add(new DiscountDetails(DiscountPrecedence.After, DiscountType.Default));
             ListOfDiscounts.Add(new DiscountDetails(DiscountPrecedence.After, DiscountType.UPC));
             ListOfDiscountsWithDetails DiscountsList = new ListOfDiscountsWithDetails(ListOfDiscounts);
             return DiscountsList;

@@ -5,9 +5,9 @@ namespace Kata
 {
     public class DiscountCalculator
     {
-        public AfterTaxDiscounter afterTaxDiscounter { get; private set; }
-        public BeforeTaxDiscounter beforeTaxDiscounter { get; private set; }
-        public DiscountCalculator(ListOfDiscountsWithDetails discounts)
+        public IAfterTaxDiscount afterTaxDiscounter { get; private set; }
+        public IBeforeTaxDiscount beforeTaxDiscounter { get; private set; }
+        public DiscountCalculator(ListOfDiscountsWithDetails discounts,CombiningMethods method)
         {
             if (discounts != null)
             {
@@ -15,13 +15,19 @@ namespace Kata
                 if (discounts.ContainsPrecedence(DiscountPrecedence.Before))
                 {
                     before = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.Before).ToList();
-                    beforeTaxDiscounter = new BeforeTaxDiscounter(before);
+                    if(method==CombiningMethods.Additive)
+                    beforeTaxDiscounter = new BeforeTaxAdditiveDiscounter(before);
+                    else
+                        beforeTaxDiscounter = new BeforeTaxMultiplicativeDicounter(before);
                 }
                 List<DiscountDetails> after;
                 if (discounts.ContainsPrecedence(DiscountPrecedence.After))
                 {
                     after = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.After).ToList();
-                    afterTaxDiscounter = new AfterTaxDiscounter(after);
+                    if (method == CombiningMethods.Additive)
+                        afterTaxDiscounter = new AfterTaxAdditiveDiscounter(after);
+                    else
+                        afterTaxDiscounter = new AfterTaxMultiplicativeDiscounter(after);
                 }
             }
             else
@@ -35,7 +41,7 @@ namespace Kata
         {
             double beforeTaxDiscountAmount = 0, afterTaxDiscountAmount = 0;
             if (beforeTaxDiscounter != null)
-                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product,product.Price);
             if (afterTaxDiscounter != null)
                 afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
             return beforeTaxDiscountAmount + afterTaxDiscountAmount;
@@ -45,7 +51,7 @@ namespace Kata
         {
             double beforeTaxDiscountAmount = 0;
             if (beforeTaxDiscounter != null)
-                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product,product.Price);
             return beforeTaxDiscountAmount;
         }
     }

@@ -18,9 +18,9 @@ namespace Kata
             Discount = Validator.ValidatePercent(discount);
         }
 
-        public double CalculateDiscountsBefore(Product product)
+        public double CalculateDiscountsBefore(Product product,double price)
         {
-            return Math.Round(product.Price * (Validator.ValidatePercent(Discount) / 100), 2);
+            return Math.Round(price * (Validator.ValidatePercent(Discount) / 100), 2);
         }
     }
 }

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Kata
 {
-    public class AfterTaxDiscounter : IAfterTaxDiscount
+    public class AfterTaxAdditiveDiscounter : IAfterTaxDiscount
     {
         private AfterTaxDefaultDiscounter _afterDefault;
         private AfterTaxUPCDiscounter _afterUPC;
-        public AfterTaxDiscounter(List<DiscountDetails> listOfDiscounts)
+        public AfterTaxAdditiveDiscounter(List<DiscountDetails> listOfDiscounts)
         {
             if (listOfDiscounts == null)
             {

@@ -12,10 +12,10 @@ namespace Kata
             _upcDiscounts = UPCDiscountsList.getUPCDiscounts();
         }
 
-        public double CalculateDiscountsBefore(Product product)
+        public double CalculateDiscountsBefore(Product product,double price)
         {
             if (_upcDiscounts.ContainsKey(product.UPC))
-                return Math.Round(product.Price * (_upcDiscounts[product.UPC] / 100), 2);
+                return Math.Round(price * (_upcDiscounts[product.UPC] / 100), 2);
             else
                 return 0;
         }

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Kata
 {
-    interface IBeforeTaxDiscount
+    public interface IBeforeTaxDiscount
     {
-        public double CalculateDiscountsBefore(Product product);
+        public double CalculateDiscountsBefore(Product product,double price);
     }
 }

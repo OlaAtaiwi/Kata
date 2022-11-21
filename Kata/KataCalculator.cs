@@ -11,23 +11,23 @@ namespace Kata
         private DiscountCalculator _discountsCalculator = null;
         private TaxCalculator _taxCalculator;
         private ExpensesCalculator _expensesCalculator = null;
-        public KataCalculator(Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses)
+        public KataCalculator(Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses,CombiningMethods method)
         {
             this._product = product;
             this._taxCalculator = new TaxCalculator();
             if (discounts != null)
-                _discountsCalculator = new DiscountCalculator(discounts);
+                _discountsCalculator = new DiscountCalculator(discounts,method);
             if (expenses.Count > 0)
                 _expensesCalculator = new ExpensesCalculator(expenses);
         }
 
         public void CalculatePrice()
         {
-            double beforeTaxDiscountAmount = 0, totalDiscountAmount = 0;
+            double beforeTaxDiscountAmount = 0, totalDiscountAmount=0;
             if (_discountsCalculator != null)
             {
                 beforeTaxDiscountAmount = _discountsCalculator.GetBeforeTaxDiscountAmount(_product);
-                totalDiscountAmount = _discountsCalculator.CalculateDiscount(_product);
+                totalDiscountAmount= _discountsCalculator.CalculateDiscount(_product);
             }
             var taxAmount = _taxCalculator.CalculateTaxAmount(_product.Price - beforeTaxDiscountAmount);
             _product.TaxAmount = taxAmount;

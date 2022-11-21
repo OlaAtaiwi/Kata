@@ -11,7 +11,7 @@ namespace Kata
             var dictionary = new Dictionary<int, double>();
             dictionary.Add(12345,15);
             dictionary.Add(123, 10);
-            dictionary.Add(12, 15);
+            dictionary.Add(12, 50);
             return dictionary;
         }
     }
