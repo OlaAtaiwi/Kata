@@ -1,20 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Kata
 {
     public class KataCalculatorReport
     {
-        public static void DiscountReport(KataCalculator kata, Product product, ListOfDiscountsWithDetails discounts)
+        public static void DiscountReport(KataCalculator kata, Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses)
         {
-            TaxCalculator taxCalculator = new TaxCalculator();
-            DiscountCalculator discountCalculator = new DiscountCalculator(discounts);
             Console.WriteLine(product.ToString());
+            Console.WriteLine("___________________________________________________________________________");
+            DiscountCalculator discountCalculator = new DiscountCalculator(discounts);
             BeforeTaxDiscountReport(discountCalculator.beforeTaxDiscounter, product);
-            taxReport(taxCalculator, product.Price - discountCalculator.GetBeforeTaxDiscountAmount(product));
+            Console.WriteLine("________________________________________________________");
+            taxReport(product.Price - discountCalculator.GetBeforeTaxDiscountAmount(product));
+            Console.WriteLine("________________________________________________________");
             AfterTaxDiscountReport(discountCalculator.afterTaxDiscounter, product, product.Price - discountCalculator.GetBeforeTaxDiscountAmount(product));
-            Console.WriteLine($"Product Original Price={product.Price} ");
-            Console.WriteLine($"Product Final Price={product.FinalPrice} ");
+            Console.WriteLine("________________________________________________________");
             Console.WriteLine($"Product Total Discount Amount ={product.DiscountAmount} ");
+            Console.WriteLine("________________________________________________________");
+            ExpensesReport(expenses, product);
+            Console.WriteLine("________________________________________________________");
+            Console.WriteLine($"Product Original Price={product.Price} ");
+            Console.WriteLine($"Product Final Price={product.FinalPrice:N2} ");
+        }
+
+        private static void ExpensesReport(List<Expenses> expenses, Product product)
+        {
+            if (expenses.Count > 0)
+            {
+                Console.WriteLine("Additional Expenses Include: ");
+                foreach (var item in expenses)
+                {
+                    Console.Write($"{item.Description}:");
+                    if (item.AmountType == ExpensesAmountType.Absolute)
+                        Console.WriteLine($"{item.Amount}$");
+                    else
+                        Console.WriteLine($"{item.Amount}% of the product price({product.Price * (Validator.ValidatePercent(item.Amount) / 100)}$)");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Additional Expenses");
+            }
         }
 
         public static void BeforeTaxDiscountReport(BeforeTaxDiscounter before, Product product)
@@ -25,9 +52,10 @@ namespace Kata
                 Console.WriteLine("No Discounts Before Tax is applied");
         }
 
-        public static void taxReport(TaxCalculator taxCal, double price)
+        public static void taxReport(double price)
         {
-            Console.WriteLine($"Tax ={taxCal.Tax}%, and the Tax Ammount={taxCal.CalculateTaxAmount(price)}$");
+            TaxCalculator taxCalculator = new TaxCalculator();
+            Console.WriteLine($"Tax ={taxCalculator.Tax}%, and the Tax Ammount={taxCalculator.CalculateTaxAmount(price)}$");
         }
 
         public static void AfterTaxDiscountReport(AfterTaxDiscounter after, Product product, double price)

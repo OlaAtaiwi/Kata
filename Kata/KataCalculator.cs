@@ -8,21 +8,34 @@ namespace Kata
     public class KataCalculator
     {
         private Product _product;
-        private DiscountCalculator _discountsCalculator;
+        private DiscountCalculator _discountsCalculator = null;
         private TaxCalculator _taxCalculator;
-        public KataCalculator(Product product, ListOfDiscountsWithDetails discounts)
+        private ExpensesCalculator _expensesCalculator = null;
+        public KataCalculator(Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses)
         {
             this._product = product;
             this._taxCalculator = new TaxCalculator();
-            _discountsCalculator = new DiscountCalculator(discounts);
+            if (discounts != null)
+                _discountsCalculator = new DiscountCalculator(discounts);
+            if (expenses.Count > 0)
+                _expensesCalculator = new ExpensesCalculator(expenses);
         }
 
         public void CalculatePrice()
         {
-            var taxAmount = _taxCalculator.CalculateTaxAmount(_product.Price - _discountsCalculator.GetBeforeTaxDiscountAmount(_product));
+            double beforeTaxDiscountAmount = 0, totalDiscountAmount = 0;
+            if (_discountsCalculator != null)
+            {
+                beforeTaxDiscountAmount = _discountsCalculator.GetBeforeTaxDiscountAmount(_product);
+                totalDiscountAmount = _discountsCalculator.CalculateDiscount(_product);
+            }
+            var taxAmount = _taxCalculator.CalculateTaxAmount(_product.Price - beforeTaxDiscountAmount);
             _product.TaxAmount = taxAmount;
-            _product.DiscountAmount = _discountsCalculator.CalculateDiscount(_product);
-            _product.FinalPrice = _product.Price + _product.TaxAmount - _product.DiscountAmount;
+            _product.DiscountAmount = totalDiscountAmount;
+            double expenses = 0;
+            if (_expensesCalculator != null)
+                expenses = _expensesCalculator.CalculateExpensesAmounts(_product.Price);
+            _product.FinalPrice = _product.Price + _product.TaxAmount - _product.DiscountAmount + expenses;
         }
     }
 }

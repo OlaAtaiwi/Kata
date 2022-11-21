@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kata
 {
-   public  class TaxCalculator
+    public class TaxCalculator
     {
         private const int _taxPercent = 20;
         public double Tax { get; set; }
@@ -15,7 +15,7 @@ namespace Kata
 
         public double CalculateTaxAmount(double Price)
         {
-            return Math.Round(Price*(Validator.ValidatePercent(Tax)/100), 2);
+            return Math.Round(Price * (Validator.ValidatePercent(Tax) / 100), 2);
         }
 
     }

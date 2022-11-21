@@ -16,7 +16,6 @@ namespace Kata
                 {
                     before = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.Before).ToList();
                     beforeTaxDiscounter = new BeforeTaxDiscounter(before);
-                    //CreateBeforeTaxDiscounter(before);
                 }
                 List<DiscountDetails> after;
                 if (discounts.ContainsPrecedence(DiscountPrecedence.After))
@@ -35,10 +34,10 @@ namespace Kata
         public double CalculateDiscount(Product product)
         {
             double beforeTaxDiscountAmount = 0, afterTaxDiscountAmount = 0;
-            if(beforeTaxDiscounter!=null)
-            beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
-            if(afterTaxDiscounter!=null)
-            afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
+            if (beforeTaxDiscounter != null)
+                beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+            if (afterTaxDiscounter != null)
+                afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
             return beforeTaxDiscountAmount + afterTaxDiscountAmount;
         }
 
