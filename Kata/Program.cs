@@ -9,15 +9,16 @@ namespace Kata
             Product product = new Product("The Little Prince", 12, 20.25);
             ListOfDiscountsWithDetails DiscountsList = GenerateDiscountsList();
             var ExpensesList = CreateExpensesList();
-            Kata(product, DiscountsList, ExpensesList);
+            var cap = new CapCalculator(10, AmountType.Absolute);
+            Kata(product, DiscountsList, ExpensesList,cap);
             Console.WriteLine("______________________________________________________________________________");
         }
 
-        private static void Kata(Product product, ListOfDiscountsWithDetails DiscountsList, List<Expenses> ExpensesList)
+        private static void Kata(Product product, ListOfDiscountsWithDetails DiscountsList, List<Expenses> ExpensesList, CapCalculator cap)
         {
-            KataCalculator kata = new KataCalculator(product, DiscountsList, ExpensesList,CombiningMethods.Multiplicative);
+            KataCalculator kata = new KataCalculator(product, DiscountsList, ExpensesList,CombiningMethods.Multiplicative,cap);
             kata.CalculatePrice();
-            KataCalculatorReport.DiscountReport(kata, product, DiscountsList, ExpensesList);
+            KataCalculatorReport.DiscountReport(kata, product, DiscountsList, ExpensesList,cap);
         }
 
         private static ListOfDiscountsWithDetails GenerateDiscountsList()
@@ -32,8 +33,8 @@ namespace Kata
         public static List<Expenses> CreateExpensesList()
         {
             var listOFExpenses = new List<Expenses>();
-            listOFExpenses.Add(new Expenses("Packeging", 10, ExpensesAmountType.Absolute));
-            listOFExpenses.Add(new Expenses("transport ", 10, ExpensesAmountType.Percent));
+            listOFExpenses.Add(new Expenses("Packeging", 10, AmountType.Absolute));
+            listOFExpenses.Add(new Expenses("transport ", 10, AmountType.Percent));
             return listOFExpenses;
         }
     }

@@ -18,7 +18,7 @@ namespace Kata
             double finalAmount = 0;
             foreach (var item in _listOfExpenses)
             {
-                if (item.AmountType == ExpensesAmountType.Percent)
+                if (item.AmountType == AmountType.Percent)
                     finalAmount += (price * (Validator.ValidatePercent(item.Amount) / 100));
                 else
                     finalAmount += item.Amount;

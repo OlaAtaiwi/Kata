@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kata
 {
-    public enum ExpensesAmountType
+    public enum AmountType
     {
         Percent,
         Absolute

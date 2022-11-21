@@ -5,12 +5,13 @@ namespace Kata
 {
     public class KataCalculatorReport
     {
-        public static void DiscountReport(KataCalculator kata, Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses)
+        public static void DiscountReport(KataCalculator kata, Product product, ListOfDiscountsWithDetails discounts, List<Expenses> expenses,CapCalculator cap)
         {
             Console.WriteLine(product.ToString());
             Console.WriteLine("___________________________________________________________________________");
             DiscountCalculator discountCalculator = new DiscountCalculator(discounts,CombiningMethods.Additive);
             taxReport(product.Price - discountCalculator.GetBeforeTaxDiscountAmount(product));
+            CapReport(cap, product);
             Console.WriteLine("________________________________________________________");
             Console.WriteLine($"Product Total Discount Amount ={product.DiscountAmount} ");
             Console.WriteLine("________________________________________________________");
@@ -28,7 +29,7 @@ namespace Kata
                 foreach (var item in expenses)
                 {
                     Console.Write($"{item.Description}:");
-                    if (item.AmountType == ExpensesAmountType.Absolute)
+                    if (item.AmountType == AmountType.Absolute)
                         Console.WriteLine($"{item.Amount}$");
                     else
                         Console.WriteLine($"{item.Amount}% of the product price({product.Price * (Validator.ValidatePercent(item.Amount) / 100)}$)");
@@ -40,26 +41,19 @@ namespace Kata
             }
         }
 
-        public static void BeforeTaxDiscountReport(BeforeTaxAdditiveDiscounter before, Product product)
-        {
-            if (before != null)
-                Console.WriteLine($"Before Tax discounts:{ before.GetDiscountPercent(product)}% and Discount Amount={before.CalculateDiscountsBefore(product,product.Price)}");
-            else
-                Console.WriteLine("No Discounts Before Tax is applied");
-        }
-
         public static void taxReport(double price)
         {
             TaxCalculator taxCalculator = new TaxCalculator();
             Console.WriteLine($"Tax ={taxCalculator.Tax}%, and the Tax Ammount={taxCalculator.CalculateTaxAmount(price)}$");
         }
 
-        public static void AfterTaxDiscountReport(AfterTaxAdditiveDiscounter after, Product product, double price)
+        public static void CapReport(CapCalculator cap, Product product)
         {
-            if (after != null)
-                Console.WriteLine($"After Tax discounts:{ after.GetDiscountPercent(product)}% and Discount Amount={after.CalculateDiscountsAfter(product, price)}");
+            Console.Write("Cap Amount: ");
+            if (cap.CapAmountType == AmountType.Absolute)
+                Console.WriteLine($"{cap.Amount}$ ");
             else
-                Console.WriteLine("No Discounts After Tax is applied");
+                Console.WriteLine($"{cap.Amount}% of the price({cap.CalculateCap(product)}) ");
         }
     }
 }
