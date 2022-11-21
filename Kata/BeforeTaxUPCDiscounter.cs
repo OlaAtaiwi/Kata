@@ -4,16 +4,15 @@ using System.Text;
 
 namespace Kata
 {
-    public class UPCDiscountCalculator : IDiscount
+    public class BeforeTaxUPCDiscounter : IBeforeTaxDiscount
     {
-        private Dictionary<int,double> _upcDiscounts;
-
-        public UPCDiscountCalculator()
+        private Dictionary<int, double> _upcDiscounts;
+        public BeforeTaxUPCDiscounter()
         {
             _upcDiscounts = UPCDiscountsList.getUPCDiscounts();
         }
 
-        public double CalculateDiscountAmount(Product product)
+        public double CalculateDiscountsBefore(Product product)
         {
             if (_upcDiscounts.ContainsKey(product.UPC))
                 return Math.Round(product.Price * (_upcDiscounts[product.UPC] / 100), 2);

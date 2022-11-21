@@ -10,7 +10,6 @@ namespace Kata
         public double FinalPrice { get; set; }
         public double TaxAmount { get; set; }
         public double DiscountAmount { get; set; }
-
         public Product(string Name, int UPC, double Price)
         {
             this.Name = Name;
@@ -18,6 +17,6 @@ namespace Kata
             this.Price = Math.Round(Validator.ValidatePrice(Price), 2);
         }
 
-        public override string ToString() =>$"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";
+        public override string ToString() =>$"Book with name ='{Name}', UPC = {UPC}, price =${Price}.";        
     }
 }

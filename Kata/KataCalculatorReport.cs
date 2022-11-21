@@ -2,20 +2,34 @@
 
 namespace Kata
 {
-    public static class KataCalculatorReport
+    public class KataCalculatorReport
     {
-        public static void DiscountReport(this KataCalculator kata,Product product)
+        public static void DiscountReport(KataCalculator kata,Product product, ListOfDiscountsWithDetails discounts)
         {
-            DiscountCalculator discountCalculator = new DiscountCalculator();
-            Console.WriteLine($"Sample product:{product.ToString()}" +
-            $"\nTax = {kata.taxCalculator.Tax}%, universal discount = {discountCalculator.defaultDiscount.Discount}%," +
-            $" UPC - discount = {discountCalculator.UPCDiscount.GetDiscountPercent(product)} % for UPC ={product.UPC}" +
-            $"\nTax amount ={(product.TaxAmount):N2}," +
-            $" default discount = {discountCalculator.defaultDiscount.CalculateDiscountAmount(product)}," +
-            $"UPC discount = ${discountCalculator.UPCDiscount.CalculateDiscountAmount(product)}" +
-            $"\n Program prints price ${product.FinalPrice}" +
-            $"Program reports total discount amount ${product.DiscountAmount}");
+            TaxCalculator taxCalculator = new TaxCalculator();
+            DiscountCalculator discountCalculator = new DiscountCalculator(discounts);
+            Console.WriteLine(product.ToString());
+            BeforeTaxDiscountReport(discountCalculator.beforeTaxDiscounter,product);
+            taxReport(taxCalculator,product.Price -discountCalculator.GetBeforeTaxDiscountAmount(product));
+            AfterTaxDiscountReport(discountCalculator.afterTaxDiscounter,product,product.Price - discountCalculator.GetBeforeTaxDiscountAmount(product));
+            Console.WriteLine($"Product Original Price={product.Price} ");
+            Console.WriteLine($"Product Final Price={product.FinalPrice} ");
+            Console.WriteLine($"Product Total Discount Amount ={product.DiscountAmount} ");
+        }
 
+        public static void BeforeTaxDiscountReport(BeforeTaxDiscounter before, Product product)
+        {
+            Console.WriteLine($"Before Tax discounts:{ before.GetDiscountPercent(product)}% and Discount Amount={before.CalculateDiscountsBefore(product)}");
+        }
+
+        public static void taxReport(TaxCalculator taxCal, double price)
+        {
+            Console.WriteLine($"Tax ={taxCal.Tax}%, and the Tax Ammount={taxCal.CalculateTaxAmount(price)}$");
+        }
+
+        public static void AfterTaxDiscountReport(AfterTaxDiscounter after, Product product, double price)
+        {
+            Console.WriteLine($"After Tax discounts:{ after.GetDiscountPercent(product)}% and Discount Amount={after.CalculateDiscountsAfter(product,price)}");
         }
     }
 }

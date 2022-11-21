@@ -1,33 +1,60 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Kata
 {
-    public class DiscountCalculator : IDiscount
+    public class DiscountCalculator
     {
-        public DefaultDiscountCalculator defaultDiscount { get; private set; }
-        public UPCDiscountCalculator UPCDiscount { get; private set; }
-        public DiscountCalculator()
+        public AfterTaxDiscounter afterTaxDiscounter { get; private set; }
+        public BeforeTaxDiscounter beforeTaxDiscounter { get; private set; }
+        public DiscountCalculator(ListOfDiscountsWithDetails discounts)
         {
-            defaultDiscount = new DefaultDiscountCalculator();
-            UPCDiscount = new UPCDiscountCalculator();
-        }
-        public DiscountCalculator(double defaultDiscount)
-        {
-            this.defaultDiscount = new DefaultDiscountCalculator(defaultDiscount);
-            UPCDiscount = new UPCDiscountCalculator();
+            GenerateDiscountCalculators(discounts);
         }
 
-        public double CalculateDiscountAmount(Product product)
+        private void GenerateDiscountCalculators(ListOfDiscountsWithDetails discounts)
         {
-            return Math.Round(defaultDiscount.CalculateDiscountAmount(product) + UPCDiscount.CalculateDiscountAmount(product), 2);
+            var before = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.Before).ToList();
+            var after = discounts.ListOfDiscounts.Where(disc => disc.Precedence == DiscountPrecedence.After).ToList();
+            if (after == null)
+                afterTaxDiscounter = null;
+            else
+            {
+                if (after.Count == 2)
+                    afterTaxDiscounter = new AfterTaxDiscounter(new AfterTaxDefaultDiscounter(), new AfterTaxUPCDiscounter());
+                else
+                {
+                    if (after[0].DiscountType == DiscountType.Default)
+                        afterTaxDiscounter = new AfterTaxDiscounter(new AfterTaxDefaultDiscounter(), null);
+                    else
+                        afterTaxDiscounter = new AfterTaxDiscounter(null, new AfterTaxUPCDiscounter());
+                }
+            }
+            if (before == null)
+                beforeTaxDiscounter = null;
+            else
+            {
+                if (before.Count == 2)
+                    beforeTaxDiscounter = new BeforeTaxDiscounter(new BeforeTaxDefaultDiscounter(), new BeforeTaxUPCDiscounter());
+                else
+                {
+                    if (before[0].DiscountType == DiscountType.Default)
+                        beforeTaxDiscounter = new BeforeTaxDiscounter(new BeforeTaxDefaultDiscounter(), null);
+                    else
+                        beforeTaxDiscounter = new BeforeTaxDiscounter(null, new BeforeTaxUPCDiscounter());
+                }
+            }
         }
-
-        public double GetDiscountPercent(Product product)
+        public double CalculateDiscount(Product product)
         {
-            return (defaultDiscount.GetDiscountPercent(product) + UPCDiscount.GetDiscountPercent(product));
+            var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+            var afterTaxDiscountAmount = afterTaxDiscounter.CalculateDiscountsAfter(product, product.Price - beforeTaxDiscountAmount);
+            return beforeTaxDiscountAmount + afterTaxDiscountAmount;
+        }
+        public double GetBeforeTaxDiscountAmount(Product product)
+        {
+            var beforeTaxDiscountAmount = beforeTaxDiscounter.CalculateDiscountsBefore(product);
+            return beforeTaxDiscountAmount;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Kata
@@ -7,21 +8,21 @@ namespace Kata
     public class KataCalculator
     {
         private Product _product;
-        public TaxCalculator taxCalculator { get; private set; }
-        private DiscountCalculator _discountCalculator;
-
-        public KataCalculator(Product product)
+        private DiscountCalculator _discountsCalculator;
+        private TaxCalculator _taxCalculator;
+        public KataCalculator(Product product,ListOfDiscountsWithDetails discounts)
         {
-            _product = product;
-            taxCalculator = new TaxCalculator();
-            _discountCalculator = new DiscountCalculator();
+            this._product = product;
+            this._taxCalculator = new TaxCalculator();
+            _discountsCalculator = new DiscountCalculator(discounts);
         }
 
         public void CalculatePrice()
         {
-            _product.TaxAmount = taxCalculator.CalculateTaxAmount(_product);
-            _product.DiscountAmount = _discountCalculator.CalculateDiscountAmount(_product);
-            _product.FinalPrice = _product.Price + _product.TaxAmount - _product.DiscountAmount;
+            var taxAmount = _taxCalculator.CalculateTaxAmount(_product.Price - _discountsCalculator.GetBeforeTaxDiscountAmount(_product));
+            _product.TaxAmount = taxAmount;
+            _product.DiscountAmount =_discountsCalculator.CalculateDiscount(_product);
+            _product.FinalPrice = _product.Price + _product.TaxAmount -_product.DiscountAmount;
         }
     }
 }
